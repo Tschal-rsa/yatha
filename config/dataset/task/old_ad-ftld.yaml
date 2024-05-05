@@ -1,0 +1,8 @@
+defaults:
+  - base
+  - _self_
+
+mapping:
+  Normal: null
+  AD: 1
+  FTLD: 0

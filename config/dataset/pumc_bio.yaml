@@ -1,0 +1,9 @@
+defaults:
+  - base
+  - task: bio_ad+ftd-normal
+  - _self_
+
+name: PUMC_bio
+root: /data/lfz/datasets/EEG/PUMC_bio/original
+preprocess_root: /data/lfz/datasets/EEG/PUMC_bio
+original_n_channels: 21

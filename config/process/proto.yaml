@@ -1,0 +1,13 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Proto
+  n_channels: ${dataset.original_n_channels}
+
+preprocess:
+  features:
+    - cwt
+    - dwt
+    - dft
+    - phase
+    - time

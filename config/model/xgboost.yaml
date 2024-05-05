@@ -1,0 +1,13 @@
+defaults:
+  - base_xgboost
+  - _self_
+
+param:
+  # HACK: set device to 'cuda'
+  # device: 'cuda:${train.device_ids}'
+  device: 'cuda'
+  nthread: 4
+  eta: 0.69
+  max_depth: 8
+  subsample: 1.00
+num_round: 10

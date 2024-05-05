@@ -1,0 +1,19 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Mycenaean
+  n_channels: ${get_reduced_n_channels:${dataset.original_n_channels}}
+
+preprocess:
+  features:
+    - frequency
+    - morlet
+    # - connectivity
+    # - mne
+  mne_features:
+    selected:
+      - mean
+      - std
+      - wavelet_coef_energy
+    params:
+      wavelet_coef_energy__wavelet_name: db4

@@ -1,0 +1,12 @@
+defaults:
+  - base
+  - _self_
+
+mapping:
+  N1: 0
+  N2: 0
+  AD: 1
+  like-AD: null
+  FTD: 1
+  not-AD: null
+  U: null

@@ -1,0 +1,25 @@
+defaults:
+  - base
+  - dataset: pumc_bio_old
+  - preprocess: base
+  - model: neo
+  - train: base
+  - process: archaic
+  - override hydra/job_logging: custom
+  - override hydra/sweeper: ax
+  - _self_
+
+run: train
+
+train:
+  device_ids: 2
+  master_port: 12392
+
+hydra:
+  run:
+    dir: /data/lfz/checkpoints/yatha/outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: /data/lfz/checkpoints/yatha/multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.override_dirname}
+  job:
+    chdir: true

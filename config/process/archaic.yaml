@@ -1,0 +1,14 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Archaic
+  n_channels: ${get_reduced_n_channels:${dataset.original_n_channels}}
+
+preprocess:
+  features:
+    - cwt
+    - dwt
+    - dft
+    - phase
+    # FIXME: time is time-consuming
+    - time

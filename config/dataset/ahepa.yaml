@@ -1,0 +1,9 @@
+defaults:
+  - base
+  - task: ahepa_ad+ftd-cn
+  - _self_
+
+name: AHEPA
+root: /data/lfz/datasets/EEG/AHEPA/original
+preprocess_root: /data/lfz/datasets/EEG/AHEPA
+original_n_channels: 19

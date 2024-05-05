@@ -1,0 +1,23 @@
+version: 1
+formatters:
+  simple:
+    (): utils.CustomFormatter
+    format: '%(message)s'
+  complex:
+    format: '[%(asctime)s][%(levelname)8s] - %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: simple
+    stream: ext://sys.stdout
+  file:
+    class: logging.FileHandler
+    formatter: complex
+    filename: ${hydra.runtime.output_dir}/${hydra.job.name}.log
+root:
+  level: DEBUG
+  handlers:
+    - console
+    - file
+
+disable_existing_loggers: false

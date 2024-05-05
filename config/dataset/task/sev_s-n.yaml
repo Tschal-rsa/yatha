@@ -1,0 +1,9 @@
+defaults:
+  - base
+  - _self_
+
+mapping:
+  N: 0
+  Mi: null
+  Mo: null
+  S: 1

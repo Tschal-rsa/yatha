@@ -1,0 +1,8 @@
+defaults:
+  - base
+  - _self_
+
+mapping:
+  A: 1
+  F: 1
+  C: 0

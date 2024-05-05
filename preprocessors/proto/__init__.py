@@ -1,0 +1,1 @@
+from .mod import get_proto_preprocessor
