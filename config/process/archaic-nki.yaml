@@ -1,0 +1,20 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Archaic-NKI
+
+preprocess:
+  features:
+    - breastCancer_Total
+
+model:
+  batch_size: 4
+  structure: 10@512
+  max_lr: 0.005
+  init_lr: 0.0005
+  logic_name: AndnessRRL
+  log_iter: 500
+  dropout_p: 0.1
+
+train:
+  plot_roc: true

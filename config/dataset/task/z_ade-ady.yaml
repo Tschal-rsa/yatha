@@ -1,0 +1,11 @@
+defaults:
+  - base
+  - _self_
+
+mapping:
+  ADy: 0
+  ADe: 1
+  nonADy: null
+  nonADe: null
+  HCy: null
+  HCe: null

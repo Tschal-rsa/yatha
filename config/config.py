@@ -127,6 +127,7 @@ class TrainConfig:
     master_port: str = MISSING
     n_splits: int = 5
     val_size: float = 0
+    plot_roc: bool = False
 
 
 @dataclass

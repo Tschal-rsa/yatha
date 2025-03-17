@@ -16,7 +16,7 @@ def get_preprocessor(cfg: Config) -> Preprocessor:
             return get_proto_preprocessor(cfg)
         case 'Mycenaean':
             return get_mycenaean_preprocessor(cfg)
-        case 'Archaic':
+        case x if x.startswith('Archaic'):
             return get_archaic_preprocessor(cfg)
         case _name:
             logger.critical(f'Unknown preprocess name: {_name}!')

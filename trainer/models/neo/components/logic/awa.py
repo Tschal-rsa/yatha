@@ -9,15 +9,15 @@ from .interface import LogicInterface, RuleType
 
 
 class LogicLayerAWA(LogicInterface):
-    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int) -> None:
-        super().__init__(cfg, input_dim, output_dim)
+    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int, use_not: bool) -> None:
+        super().__init__(cfg, input_dim, output_dim, use_not)
         self.W = nn.Parameter(
-            torch.rand(input_dim, output_dim) * (0.5 - cfg.eps) + cfg.eps
+            torch.rand(self.input_dim, self.output_dim) * (0.5 - cfg.eps) + cfg.eps
         )
         self.bound, self.eps = cfg.bound, cfg.eps
         self.AWA = AWA(self.bound, self.eps)
         self.andness = nn.Parameter(
-            torch.rand(output_dim) * (1 - 2 * self.bound) + self.bound
+            torch.rand(self.output_dim) * (1 - 2 * self.bound) + self.bound
         )
 
     def fuzzy_forward(self, x: Tensor) -> Tensor:

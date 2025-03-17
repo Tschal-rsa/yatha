@@ -1,0 +1,8 @@
+defaults:
+  - base
+  - task: binary
+  - _self_
+
+name: Arcene
+root: /data/lfz/datasets/EEG/NIPS2003/Arcene/original
+preprocess_root: /data/lfz/datasets/EEG/NIPS2003/Arcene

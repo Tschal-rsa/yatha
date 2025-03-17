@@ -1,0 +1,9 @@
+defaults:
+  - base
+  - task: sev_s+mo+mi-n
+  - _self_
+
+name: PUMC_res
+root: /data/lfz/datasets/EEG/PUMC_res/original
+preprocess_root: /data/lfz/datasets/EEG/PUMC_res
+original_n_channels: 21

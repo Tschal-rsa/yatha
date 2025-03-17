@@ -2,11 +2,12 @@ import json
 import os
 import random
 from typing import Iterator, cast
-from collections import defaultdict
+
 import numpy as np
 from numpy.typing import NDArray
-from sklearn.model_selection import StratifiedGroupKFold, train_test_split
-from omegaconf import OmegaConf
+from sklearn.model_selection import StratifiedGroupKFold
+from tqdm.autonotebook import tqdm
+
 from config import Config
 from dataset import (
     Data,
@@ -39,7 +40,7 @@ class Spliter:
                     self.cfg.preprocess.sample_epochs,
                 ),
             )[:-1]
-    
+
     def get_dataset_labels(self) -> None:
         mapping = cast(dict[str, int | None], self.cfg.dataset.task.mapping)
         label_names: list[list[str]] = [[] for _ in range(self.cfg.dataset.num_class)]
@@ -60,7 +61,7 @@ class Spliter:
             with np.load(
                 os.path.join(self.cfg.dataset.feature_path, f'{feature}.npz')
             ) as data:
-                for pid_label in data.files:
+                for pid_label in tqdm(data.files, desc=feature):
                     pid, label = cast(tuple[str, str], pid_label.split('_'))
                     if (new_label := self.cfg.dataset.task.mapping[label]) is not None:
                         for sid, sample_data in enumerate(

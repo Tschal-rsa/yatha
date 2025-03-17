@@ -31,7 +31,7 @@ class ArchaicAHEPA(ArchaicPreprocessor):
             for pid, group in zip(participants['participant_id'], participants['Group'])
         }
 
-    def preprocess_single_file(self, file: str) -> mne.io.Raw | None:
+    def preprocess_single_file(self, file: str) -> mne.io.Raw | mne.Epochs | None:
         raw = mne.io.read_raw_eeglab(
             file,
             preload=True,

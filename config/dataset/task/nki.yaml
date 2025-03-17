@@ -1,0 +1,7 @@
+defaults:
+  - base
+  - _self_
+
+mapping:
+  relapse: 1
+  non-relapse: 0

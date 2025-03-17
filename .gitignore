@@ -163,6 +163,7 @@ cython_debug/
 .vscode/
 
 # Dead files
+preprocessors/archaic/pumc_ica.py
 extractor/ahepa.py
 extractor/pumc.py
 trainer/models/neo/components/union_old.py
@@ -174,3 +175,7 @@ trainer/models/neo/components/logic/awe.py
 
 # Auxiliary files
 *.sh
+README_hidden.md
+
+# Visualization modules
+vis/

@@ -34,8 +34,8 @@ class Net(ModuleInterface):
             elif i == len(dims) - 1:
                 layer = Linear(cfg, prev_dim, dims[i])
             else:
-                # FIXME: layer_use_not = True if i != 2 else False
-                layer = get_logic_layer(cfg, prev_dim, dims[i])
+                layer_use_not = i > 2
+                layer = get_logic_layer(cfg, prev_dim, dims[i], layer_use_not)
             prev_dim = layer.output_dim
             layer_list.append(layer)
         self.layer_list = cast(list[ModuleInterface], nn.ModuleList(layer_list))
@@ -131,10 +131,10 @@ class Net(ModuleInterface):
                     connected_rid[ln - 1].add(rid)
             elif isinstance(layer, LogicInterface):
                 for rid in connected_rid[ln]:
-                    rule = layer.rule_list[rid].rids
+                    rule = layer.rule_list[rid].runits
                     edge_cnt += len(rule)
                     for r in rule:
-                        connected_rid[ln - 1].add(r)
+                        connected_rid[ln - 1].add(r.rid)
         return np.log(edge_cnt).item()
 
     # override

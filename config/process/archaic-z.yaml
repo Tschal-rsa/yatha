@@ -1,0 +1,21 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Archaic-Z
+
+preprocess:
+  features:
+    - all
+
+model:
+  batch_size: 128
+  structure: 10@1024
+  max_lr: 0.002
+  init_lr: 0.0002
+  logic_name: AndnessRRL
+  log_iter: 500
+  dropout_p: 0
+
+train:
+  n_splits: 10
+  plot_roc: true

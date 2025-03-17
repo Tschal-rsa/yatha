@@ -1,0 +1,8 @@
+defaults:
+  - base
+  - task: binary
+  - _self_
+
+name: Gisette
+root: /data/lfz/datasets/EEG/NIPS2003/Gisette/original
+preprocess_root: /data/lfz/datasets/EEG/NIPS2003/Gisette

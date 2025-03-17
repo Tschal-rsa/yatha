@@ -1,0 +1,24 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Archaic-10
+  n_channels: ${get_reduced_n_channels:${dataset.original_n_channels}}
+
+preprocess:
+  crop_duration: 10
+  features:
+    - cwt
+    - dwt
+    - dft
+    - phase
+    - time
+
+model:
+  max_lr: 0.01
+  init_lr: 0.001
+  logic_name: AndnessRRL
+  log_iter: 6000
+  dropout_p: 0.1
+
+train:
+  plot_roc: true

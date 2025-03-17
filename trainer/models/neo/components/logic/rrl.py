@@ -70,11 +70,11 @@ class DisjunctionLayer(LogicInterfaceRRL):
 
 
 class LogicLayerRRL(LogicInterface):
-    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int) -> None:
-        super().__init__(cfg, input_dim, output_dim)
-        self.logic_dim = output_dim // 2
-        self.con_layer = ConjunctionLayer(cfg, input_dim, self.logic_dim)
-        self.dis_layer = DisjunctionLayer(cfg, input_dim, self.logic_dim)
+    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int, use_not: bool) -> None:
+        super().__init__(cfg, input_dim, output_dim, use_not)
+        self.logic_dim = self.output_dim // 2
+        self.con_layer = ConjunctionLayer(cfg, self.input_dim, self.logic_dim)
+        self.dis_layer = DisjunctionLayer(cfg, self.input_dim, self.logic_dim)
 
     # override
     def clear_activation(self) -> None:

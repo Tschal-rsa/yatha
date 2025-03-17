@@ -1,0 +1,11 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Archaic-UCI
+
+preprocess:
+  features:
+    - K9
+
+train:
+  plot_roc: true

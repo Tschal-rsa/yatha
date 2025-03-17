@@ -12,6 +12,12 @@ from ..functions import GradGraft
 from ..interface import ModuleInterface
 
 
+@dataclass(order=True, frozen=True)
+class RuleUnit:
+    rid: int
+    neg: bool
+
+
 class RuleType(Enum):
     AND = '&'
     OR = '|'
@@ -19,23 +25,27 @@ class RuleType(Enum):
 
 @dataclass(frozen=True)
 class Rule:
-    rids: tuple[int, ...]
+    runits: tuple[RuleUnit, ...]
     rtype: RuleType
 
     def get_description(self, input_rule_names: list[str], wrap: bool = False) -> str:
         name = ''
-        for i, ri in enumerate(self.rids):
+        for i, ru in enumerate(self.runits):
             op_str = f' {self.rtype.value} ' if i > 0 else ''
-            var_str = input_rule_names[ri]
-            if wrap:
+            not_str = '~' if ru.neg else ''
+            var_str = input_rule_names[ru.rid]
+            if wrap or ru.neg:
                 var_str = f'({var_str})'
-            name += f'{op_str}{var_str}'
+            name += f'{op_str}{not_str}{var_str}'
         return name
 
 
 class LogicInterface(ModuleInterface):
-    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int) -> None:
+    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int, use_not: bool) -> None:
+        if use_not:
+            input_dim *= 2
         super().__init__(input_dim, output_dim)
+        self.use_not = use_not
         self.dropout = Dropout(cfg.dropout_p)
         self.rule_list: list[Rule] = []
 
@@ -44,11 +54,19 @@ class LogicInterface(ModuleInterface):
         raise NotImplementedError
 
     def forward(self, x: Tensor) -> Tensor:
+        if self.use_not:
+            x = torch.cat((x, 1 - x), dim=1)
         res_tilde = self.fuzzy_forward(x)
         with torch.no_grad():
             res_bar = self.bool_forward(x)
             res_bar = self.dropout(res_bar)
         return GradGraft.apply(res_bar, res_tilde)
+    
+    # override
+    def bool_forward_with_count(self, x: Tensor) -> Tensor:
+        if self.use_not:
+            x = torch.cat((x, 1 - x), dim=1)
+        return super().bool_forward_with_count(x)
 
     @property
     @abstractmethod
@@ -85,11 +103,15 @@ class LogicInterface(ModuleInterface):
             ):
                 self.dim2id.append(-1)
                 continue
-            rids: set[int] = set()
+            runits: set[RuleUnit] = set()
             # feature id -> input id / rule id (identical in the binarize layer)
             feature2id: dict[int, int] = {}
             # ci: range(input_dim), index of a input neuron
             for ci, w in enumerate(row):
+                neg = False
+                if self.use_not and ci >= (half_input_dim := self.input_dim // 2):
+                    neg = True
+                    ci -= half_input_dim
                 if w > 0 and prev_dim2id[ci] != -1:
                     if isinstance(prev_layer, BinarizeLayer):
                         # merge the bounds for one feature
@@ -99,7 +121,7 @@ class LogicInterface(ModuleInterface):
                         fi = ci // prev_layer.num_binarization
                         if fi not in feature2id.keys():
                             feature2id[fi] = ci
-                            rids.add(ci)
+                            runits.add(RuleUnit(ci, False))
                         else:
                             if (ci < bounds.shape[0] // 2 and op == RuleType.AND) or (
                                 ci >= bounds.shape[0] // 2 and op == RuleType.OR
@@ -109,13 +131,13 @@ class LogicInterface(ModuleInterface):
                                 func = min
                             new_bound = func(bounds[feature2id[fi]], bounds[ci])
                             if new_bound == bounds[ci]:
-                                rids.remove(feature2id[fi])
-                                rids.add(ci)
+                                runits.remove(RuleUnit(feature2id[fi], False))
+                                runits.add(RuleUnit(ci, False))
                                 feature2id[fi] = ci
                     else:
-                        rids.add(prev_dim2id[ci])
+                        runits.add(RuleUnit(prev_dim2id[ci], neg))
 
-            rule = Rule(tuple(sorted(rids)), op)
+            rule = Rule(tuple(sorted(runits)), op)
             if rule not in rule2id.keys():
                 rule2id[rule] = tmp_id
                 self.rule_list.append(rule)

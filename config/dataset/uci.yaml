@@ -1,0 +1,8 @@
+defaults:
+  - base
+  - task: uci
+  - _self_
+
+name: UCI
+root: /data/lfz/datasets/EEG/UCI/original
+preprocess_root: /data/lfz/datasets/EEG/UCI

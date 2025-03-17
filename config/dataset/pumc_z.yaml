@@ -1,0 +1,8 @@
+defaults:
+  - base
+  - task: z_ce-cy
+  - _self_
+
+name: PUMC_Z
+root: /data/lfz/datasets/EEG/PUMC_Z/original
+preprocess_root: /data/lfz/datasets/EEG/PUMC_Z

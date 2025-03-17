@@ -18,7 +18,7 @@ class ArchaicPreprocessor(Preprocessor):
         raise NotImplementedError
 
     @abstractmethod
-    def preprocess_single_file(self, file: str) -> mne.io.Raw | None:
+    def preprocess_single_file(self, file: str) -> mne.io.Raw | mne.Epochs | None:
         raise NotImplementedError
 
     def get_decim(self, sfreq: float) -> int:
@@ -28,23 +28,23 @@ class ArchaicPreprocessor(Preprocessor):
         os.makedirs(self.cfg.dataset.preprocess_path, exist_ok=True)
         for pid, (file, label) in tqdm(self.get_file_label_map().items(), desc='File'):
             logger.debug(f'{pid} {label}')
-            raw = self.preprocess_single_file(file)
-            if raw is None:
+            signal = self.preprocess_single_file(file)
+            if signal is None:
                 logger.warning(f'{pid} is empty!')
                 continue
-            raw_dir = os.path.join(self.cfg.dataset.preprocess_path, f'{pid}_{label}')
-            os.makedirs(raw_dir, exist_ok=True)
-            max_time = (raw.n_times - 1) / raw.info['sfreq']
-            tmin, tmax = 0.0, self.cfg.preprocess.crop_duration
-            idx = 0
-            while tmax <= max_time:
-                raw_file = os.path.join(raw_dir, f'{idx}_raw.fif')
-                raw.save(raw_file, tmin=tmin, tmax=tmax, overwrite=True)
-                tmin, tmax = tmax, tmax + self.cfg.preprocess.crop_duration
-                idx += 1
-            # decim = self.get_decim(epochs.info['sfreq'])
-            # epochs.decimate(decim)
-            # epochs_file = os.path.join(
-            #     self.cfg.dataset.preprocess_path, f'{pid}_{label}_epo.fif'
-            # )
-            # epochs.save(epochs_file, overwrite=True)
+            signal_dir = os.path.join(self.cfg.dataset.preprocess_path, f'{pid}_{label}')
+            os.makedirs(signal_dir, exist_ok=True)
+            if isinstance(signal, mne.io.Raw):
+                max_time = (signal.n_times - 1) / signal.info['sfreq']
+                tmin, tmax = 0.0, self.cfg.preprocess.crop_duration
+                idx = 0
+                while tmax <= max_time:
+                    segment_file = os.path.join(signal_dir, f'{idx}_raw.fif')
+                    signal.save(segment_file, tmin=tmin, tmax=tmax, overwrite=True)
+                    tmin, tmax = tmax, tmax + self.cfg.preprocess.crop_duration
+                    idx += 1
+            elif isinstance(signal, mne.Epochs):
+                for idx, epochs_data in enumerate(signal):
+                    raw_epoch = mne.io.RawArray(epochs_data, signal.info)
+                    segment_file = os.path.join(signal_dir, f'{idx}_raw.fif')
+                    raw_epoch.save(segment_file, overwrite=True)

@@ -1,0 +1,10 @@
+defaults:
+  - base
+  - _self_
+
+mapping:
+  Ay: 0
+  Ae: 1
+  F: null
+  Ny: null
+  Ne: null

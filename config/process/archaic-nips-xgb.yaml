@@ -1,0 +1,11 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Archaic-NIPS
+
+preprocess:
+  features:
+    - all
+
+train:
+  plot_roc: true

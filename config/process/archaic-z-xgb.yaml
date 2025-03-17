@@ -1,0 +1,19 @@
+# @package _global_
+
+dataset:
+  preprocess_name: Archaic-Z
+
+preprocess:
+  features:
+    - all
+
+model:
+  param:
+    eta: 0.4183209987544359
+    max_depth: 6
+    subsample: 0.9408972713721218
+
+train:
+  device_ids: 3
+  n_splits: 10
+  plot_roc: true

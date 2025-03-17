@@ -8,12 +8,12 @@ from ..functions import Binarize, mask_conjunction, mask_disjunction
 from .interface import LogicInterface, RuleType
 
 class LogicLayerNFRL(LogicInterface):
-    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int) -> None:
-        super().__init__(cfg, input_dim, output_dim)
-        self.W = nn.Parameter(torch.rand(input_dim, output_dim) * 0.25 + 0.5)
-        # self.r = nn.Parameter(0.5 * torch.randn(output_dim))
-        # self.andness = nn.Parameter(torch.rand(output_dim))
-        self.andness = nn.Parameter(torch.randn(output_dim) * 0.25 + 0.5)
+    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int, use_not: bool) -> None:
+        super().__init__(cfg, input_dim, output_dim, use_not)
+        self.W = nn.Parameter(torch.rand(self.input_dim, self.output_dim) * 0.25 + 0.5)
+        # self.r = nn.Parameter(0.5 * torch.randn(self.output_dim))
+        # self.andness = nn.Parameter(torch.rand(self.output_dim))
+        self.andness = nn.Parameter(torch.randn(self.output_dim) * 0.25 + 0.5)
     
     @property
     def Wb(self) -> Tensor:

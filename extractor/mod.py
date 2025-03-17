@@ -15,7 +15,7 @@ def get_extractor(cfg: Config) -> Extractor:
             return ProtoExtractor(cfg)
         case 'Mycenaean':
             return MycenaeanExtractor(cfg)
-        case 'Archaic':
+        case x if x.startswith('Archaic'):
             return ArchaicExtractor(cfg)
         case _name:
             logger.critical(f'Unknown preprocess name: {_name}!')

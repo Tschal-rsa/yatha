@@ -1,10 +1,10 @@
 defaults:
   - base
-  - dataset: pumc_bio_old
+  - dataset: pumc_z
   - preprocess: base
   - model: neo
   - train: base
-  - process: archaic
+  - process: archaic-z
   - override hydra/job_logging: custom
   - override hydra/sweeper: ax
   - _self_

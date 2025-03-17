@@ -1,0 +1,9 @@
+defaults:
+  - base
+  - task: age_ae-ay
+  - _self_
+
+name: PUMC_bio_age
+root: /data/lfz/datasets/EEG/PUMC_bio_age/original
+preprocess_root: /data/lfz/datasets/EEG/PUMC_bio_age
+original_n_channels: 21

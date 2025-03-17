@@ -52,9 +52,9 @@ class UnionLayer(LogicInterfaceRRL):
 
 
 class LogicLayerAndnessRRL(LogicInterface):
-    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int) -> None:
-        super().__init__(cfg, input_dim, output_dim)
-        self.union_layer = UnionLayer(cfg, input_dim, output_dim)
+    def __init__(self, cfg: NeoConfig, input_dim: int, output_dim: int, use_not: bool) -> None:
+        super().__init__(cfg, input_dim, output_dim, use_not)
+        self.union_layer = UnionLayer(cfg, self.input_dim, self.output_dim)
 
     # override
     def clear_activation(self) -> None:

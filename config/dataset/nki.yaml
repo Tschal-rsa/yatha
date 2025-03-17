@@ -1,0 +1,8 @@
+defaults:
+  - base
+  - task: nki
+  - _self_
+
+name: NKI
+root: /data/lfz/datasets/EEG/NKI/original
+preprocess_root: /data/lfz/datasets/EEG/NKI
